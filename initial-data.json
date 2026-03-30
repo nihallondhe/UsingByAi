@@ -1,0 +1,52 @@
+[
+  {
+    "Name": "Alice Johnson",
+    "Roll No": "S001",
+    "Grade": "A"
+  },
+  {
+    "Name": "Bob Smith",
+    "Roll No": "S002",
+    "Grade": "B+"
+  },
+  {
+    "Name": "Charlie Brown",
+    "Roll No": "S003",
+    "Grade": "A-"
+  },
+  {
+    "Name": "Diana Prince",
+    "Roll No": "S004",
+    "Grade": "B"
+  },
+  {
+    "Name": "Ethan Hunt",
+    "Roll No": "S005",
+    "Grade": "C+"
+  },
+  {
+    "Name": "Fiona Gallagher",
+    "Roll No": "S006",
+    "Grade": "A"
+  },
+  {
+    "Name": "George Miller",
+    "Roll No": "S007",
+    "Grade": "B-"
+  },
+  {
+    "Name": "Hannah Lee",
+    "Roll No": "S008",
+    "Grade": "A+"
+  },
+  {
+    "Name": "Ian Chen",
+    "Roll No": "S009",
+    "Grade": "C"
+  },
+  {
+    "Name": "Julia Roberts",
+    "Roll No": "S010",
+    "Grade": "B+"
+  }
+]

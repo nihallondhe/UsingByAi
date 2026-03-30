@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-img {
+            height: 220px;
+            width: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .project-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-title {
+            font-size: 1.6rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .project-title i {
+            color: #3498db;
+        }
+
+        .project-description {
+            color: #5d6d7e;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .project-link:hover {
+            background-color: #2980b9;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            color: #95a5a6;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>My Development Projects</h1>
+            <p>A showcase of recent work, highlighting modern web development techniques and creative problem-solving.</p>
+        </header>
+
+        <main>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <article class="project-card">
+                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="E-commerce Dashboard Interface" class="project-img">
+                    <div class="project-content">
+                        <h2 class="project-title"><i class="fas fa-shopping-cart"></i> NovaShop Dashboard</h2>
+                        <p class="project-description">
+                            A full-featured e-commerce admin dashboard built with React and Node.js. Features real-time sales analytics, inventory management, and customer insights. Implements secure payment gateway APIs and responsive design for mobile administrators.
+                        </p>
+                        <a href="/project-novashop" class="project-link">
+                            View Case Study <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 2 -->
+                <article class="project-card">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Data Visualization Charts" class="project-img">
+                    <div class="project-content">
+                        <h2 class="project-title"><i class="fas fa-chart-line"></i> Climate Data Viz</h2>
+                        <p class="project-description">
+                            An interactive data visualization platform for environmental datasets. Uses D3.js and WebGL to render complex climate models. Allows users to filter by region, time period, and metrics, presenting findings through dynamic charts and maps.
+                        </p>
+                        <a href="/project-climate-viz" class="project-link">
+                            Explore Project <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Project 3 -->
+                <article class="project-card">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Mobile Fitness App Screens" class="project-img">
+                    <div class="project-content">
+                        <h2 class="project-title"><i class="fas fa-dumbbell"></i> FitJourney Mobile App</h2>
+                        <p class="project-description">
+                            A cross-platform fitness application developed with React Native. Includes workout tracking, personalized plan generation, and social features. Integrates with wearable devices and uses machine learning to adapt recommendations based on user progress.
+                        </p>
+                        <a href="/project-fitjourney" class="project-link">
+                            View Details <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; <span id="currentYear"></span> Project Portfolio. All projects are fictional for demonstration.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

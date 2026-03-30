@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Logger</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border: none;
+        }
+        .card-header {
+            background-color: #0d6efd;
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+        .btn-success {
+            background-color: #198754;
+            border-color: #198754;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #212529;
+        }
+        .table th {
+            background-color: #e9ecef;
+            border-top: none;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .badge {
+            font-size: 0.85em;
+            padding: 0.4em 0.8em;
+        }
+        .action-buttons {
+            white-space: nowrap;
+        }
+        #workoutTable tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        .empty-row td {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            padding: 40px !important;
+        }
+        .exercise-row {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4 text-center"><i class="bi bi-activity me-2"></i>Workout Logger</h1>
+        <p class="lead text-center mb-5">Track your exercises, sets, reps, and weights to monitor your fitness progress.</p>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="bi bi-plus-circle me-2"></i>Add New Exercise
+                    </div>
+                    <div class="card-body">
+                        <form id="workoutForm">
+                            <div class="mb-3">
+                                <label for="exerciseName" class="form-label">Exercise Name *</label>
+                                <input type="text" class="form-control" id="exerciseName" placeholder="e.g., Bench Press, Squat" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="category" class="form-label">Category *</label>
+                                <select class="form-select" id="category" required>
+                                    <option value="" selected disabled>Select a category</option>
+                                    <option value="Chest">Chest</option>
+                                    <option value="Back">Back</option>
+                                    <option value="Legs">Legs</option>
+                                    <option value="Shoulders">Shoulders</option>
+                                    <option value="Arms">Arms</option>
+                                    <option value="Core">Core</option>
+                                    <option value="Cardio">Cardio</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="sets" class="form-label">Sets *</label>
+                                    <input type="number" class="form-control" id="sets" min="1" max="20" value="3" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="reps" class="form-label">Reps *</label>
+                                    <input type="number" class="form-control" id="reps" min="1" max="100" value="10" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="weight" class="form-label">Weight (lbs/kg) *</label>
+                                <input type="number" class="form-control" id="weight" min="0" step="0.5" placeholder="e.g., 45.5" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="notes" class="form-label">Notes</label>
+                                <textarea class="form-control" id="notes" rows="2" placeholder="Any additional notes..."></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="date" class="form-label">Date *</label>
+                                <input type="date" class="form-control" id="date" required>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary" id="submitBtn">
+                                    <i class="bi bi-check-circle me-2"></i>Add Exercise
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" id="clearBtn">
+                                    <i class="bi bi-x-circle me-2"></i>Clear Form
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <i class="bi bi-info-circle me-2"></i>Quick Stats
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6 mb-3">
+                                <h4 id="totalExercises">0</h4>
+                                <p class="text-muted small">Total Exercises</p>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <h4 id="totalVolume">0</h4>
+                                <p class="text-muted small">Total Volume (lbs)</p>
+                            </div>
+                            <div class="col-12">
+                                <p class="small text-muted mb-0">Volume = Sets × Reps × Weight</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span><i class="bi bi-list-task me-2"></i>Workout History</span>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-outline-danger" id="clearAllBtn">
+                                <i class="bi bi-trash me-1"></i>Clear All
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="workoutTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Exercise</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Sets x Reps</th>
+                                        <th scope="col">Weight</th>
+                                        <th scope="col">Volume</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="workoutTableBody">
+                                    <!-- Rows will be inserted here by JavaScript -->
+                                    <tr class="empty-row" id="emptyRow">
+                                        <td colspan="7">No exercises logged yet. Add your first exercise using the form!</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="showNotesToggle">
+                                <label class="form-check-label" for="showNotesToggle">
+                                    Show notes in table
+                                </label>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="exportBtn">
+                                    <i class="bi bi-download me-1"></i>Export
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="sortDateBtn">
+                                    <i class="bi bi-sort-down me-1"></i>Sort by Date
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <i class="bi bi-filter me-2"></i>Filter Exercises
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="filterCategory" class="form-label">Filter by Category</label>
+                                <select class="form-select" id="filterCategory">
+                                    <option value="">All Categories</option>
+                                    <option value="Chest">Chest</option>
+                                    <option value="Back">Back</option>
+                                    <option value="Legs">Legs</option>
+                                    <option value="Shoulders">Shoulders</option>
+                                    <option value="Arms">Arms</option>
+                                    <option value="Core">Core</option>
+                                    <option value="Cardio">Cardio</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="filterDate" class="form-label">Filter by Date</label>
+                                <input type="date" class="form-control" id="filterDate">
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-outline-secondary" id="resetFilterBtn">
+                                <i class="bi bi-arrow-clockwise me-1"></i>Reset Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+
+            // Load workouts from localStorage
+            let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+            let editIndex = -1;
+
+            // Update stats and table
+            function updateDisplay() {
+                updateStats();
+                renderTable();
+            }
+
+            // Calculate and update statistics
+            function updateStats() {
+                const totalExercises = workouts.length;
+                let totalVolume = 0;
+
+                workouts.forEach(workout => {
+                    totalVolume += workout.sets * workout.reps * workout.weight;
+                });
+
+                document.getElementById('totalExercises').textContent = totalExercises;
+                document.getElementById('totalVolume').textContent = totalVolume.toFixed(1);
+            }
+
+            // Render the table with workouts
+            function renderTable(filteredWorkouts = null) {
+                const tableBody = document.getElementById('workoutTableBody');
+                const emptyRow = document.getElementById('emptyRow');
+                const workoutsToRender = filteredWorkouts || workouts;
+
+                // Clear table body except empty row
+                while (tableBody.firstChild) {
+                    tableBody.removeChild(tableBody.firstChild);
+                }
+
+                if (workoutsToRender.length === 0) {
+                    tableBody.appendChild(emptyRow);
+                    emptyRow.style.display = '';
+                    return;
+                }
+
+                emptyRow.style.display = 'none';
+
+                workoutsToRender.forEach((workout, index) => {
+                    const originalIndex = workouts.indexOf(workout);
+                    const volume = (workout.sets * workout.reps * workout.weight).toFixed(1);
+                    const showNotes = document.getElementById('showNotesToggle').checked;
+
+                    const row = document.createElement('tr');
+                    row.className = 'exercise-row';
+                    row.innerHTML = `
+                        <td>
+                            <strong>${workout.exerciseName}</strong>
+                            ${showNotes && workout.notes ? `<br><small class="text-muted">${workout.notes}</small>` : ''}
+                        </td>
+                        <td><span class="badge bg-primary">${workout.category}</span></td>
+                        <td>${workout.sets} × ${workout.reps}</td>
+                        <td>${workout.weight} lbs</td>
+                        <td><strong>${volume}</strong></td>
+                        <td>${workout.date}</td>
+                        <td class="action-buttons">
+                            <button class="btn btn-sm btn-warning edit-btn" data-index="${originalIndex}">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-btn" data-index="${originalIndex}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                // Add event listeners to new buttons
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        editWorkout(parseInt(this.getAttribute('data-index')));
+                    });
+                });
+
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        deleteWorkout(parseInt(this.getAttribute('data-index')));
+                    });
+                });
+            }
+
+            // Add or update a workout
+            document.getElementById('workoutForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const workout = {
+                    exerciseName: document.getElementById('exerciseName').value.trim(),
+                    category: document.getElementById('category').value,
+                    sets: parseInt(document.getElementById('sets').value),
+                    reps: parseInt(document.getElementById('reps').value),
+                    weight: parseFloat(document.getElementById('weight').value),
+                    notes: document.getElementById('notes').value.trim(),
+                    date: document.getElementById('date').value
+                };
+
+                if (editIndex === -1) {
+                    // Add new workout
+                    workouts.push(workout);
+                } else {
+                    // Update existing workout
+                    workouts[editIndex] = workout;
+                    editIndex = -1;
+                    document.getElementById('submitBtn').innerHTML = '<i class="bi bi-check-circle me-2"></i>Add Exercise';
+                }
+
+                // Save to localStorage
+                localStorage.setItem('workouts', JSON.stringify(workouts));
+
+                // Update display and reset form
+                updateDisplay();
+                this.reset();
+                document.getElementById('date').value = today;
+            });
+
+            // Edit a workout
+            function editWorkout(index) {
+                const workout = workouts[index];
+                document.getElementById('exerciseName').value = workout.exerciseName;
+                document.getElementById('category').value = workout.category;
+                document.getElementById('sets').value = workout.sets;
+                document.getElementById('reps').value = workout.reps;
+                document.getElementById('weight').value = workout.weight;
+                document.getElementById('notes').value = workout.notes;
+                document.getElementById('date').value = workout.date;
+
+                editIndex = index;
+                document.getElementById('submitBtn').innerHTML = '<i class="bi bi-check-circle me-2"></i>Update Exercise';
+
+                // Scroll to form
+                document.getElementById('exerciseName').focus();
+            }
+
+            // Delete a workout
+            function deleteWorkout(index) {
+                if (confirm('Are you sure you want to delete this exercise?')) {
+                    workouts.splice(index, 1);
+                    localStorage.setItem('workouts', JSON.stringify(workouts));
+                    updateDisplay();
+                }
+            }
+
+            // Clear form
+            document.getElementById('clearBtn').addEventListener('click', function() {
+                document.getElementById('workoutForm').reset();
+                document.getElementById('date').value = today;
+                editIndex = -1;
+                document.getElementById('submitBtn').innerHTML = '<i class="bi bi-check-circle me-2"></i>Add Exercise';
+            });
+
+            // Clear all workouts
+            document.getElementById('clearAllBtn').addEventListener('click', function() {
+                if (workouts.length === 0) {
+                    alert('No workouts to clear.');
+                    return;
+                }
+
+                if (confirm('Are you sure you want to delete ALL workouts? This cannot be undone.')) {
+                    workouts = [];
+                    localStorage.removeItem('workouts');
+                    updateDisplay();
+                }
+            });
+
+            // Toggle notes display
+            document.getElementById('showNotesToggle').addEventListener('change', function() {
+                renderTable();
+            });
+
+            // Export workouts as JSON
+            document.getElementById('exportBtn').addEventListener('click', function() {
+                if (workouts.length === 0) {
+                    alert('No workouts to export.');
+                    return;
+                }
+
+                const dataStr = JSON.stringify(workouts, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                const exportFileDefaultName = 'workouts.json';
+
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+            });
+
+            // Sort by date (newest first)
+            document.getElementById('sortDateBtn').addEventListener('click', function() {
+                workouts.sort((a, b) => new Date(b.date) - new Date(a.date));
+                localStorage.setItem('workouts', JSON.stringify(workouts));
+                renderTable();
+            });
+
+            // Filter by category
+            document.getElementById('filterCategory').addEventListener('change', function() {
+                applyFilters();
+            });
+
+            // Filter by date
+            document.getElementById('filterDate').addEventListener('change', function() {
